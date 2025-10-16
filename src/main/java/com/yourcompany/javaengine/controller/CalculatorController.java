@@ -9,7 +9,7 @@ import org.mariuszgromada.math.mxparser.mXparser;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/calculator")
+
 public class CalculatorController {
 
     @Autowired
