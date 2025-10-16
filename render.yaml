@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: java-engine
+    env: java
+    buildCommand: mvn clean package
+    startCommand: java -jar target/java-engine-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DATABASE_URL
+        value: jdbc:mysql://<your-db-url>

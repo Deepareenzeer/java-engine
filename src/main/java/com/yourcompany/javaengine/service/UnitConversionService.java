@@ -54,27 +54,41 @@ public class UnitConversionService {
     );
 
     public double convert(UnitConversionRequest request) {
-        String category = request.getCategory().toLowerCase();
-
-        // ✅ หมวดพิเศษ: อุณหภูมิ
-        if ("temperature".equals(category)) {
-            return convertTemperature(request.getFromUnit(), request.getToUnit(), request.getValue());
+        if (request == null) {
+            throw new IllegalArgumentException("Request body is null");
         }
 
-        // ✅ ตรวจว่าหมวดนี้รองรับไหม
+        String category = request.getCategory();
+        String fromUnit = request.getFromUnit();
+        String toUnit = request.getToUnit();
+        Double value = request.getValue();
+
+        // ตรวจ null
+        if (category == null || fromUnit == null || toUnit == null || value == null) {
+            throw new IllegalArgumentException("Category, fromUnit, toUnit, and value must not be null");
+        }
+
+        category = category.toLowerCase();
+
+        // หมวดพิเศษ: อุณหภูมิ
+        if ("temperature".equals(category)) {
+            return convertTemperature(fromUnit, toUnit, value);
+        }
+
+        // ตรวจว่าหมวดนี้รองรับไหม
         if (!BASE_UNITS.containsKey(category)) {
             throw new IllegalArgumentException("Unsupported category: " + category);
         }
 
-        // ✅ หา factor จากหน่วยต้นทาง
-        double fromFactor = TO_BASE_CONVERSIONS.getOrDefault(request.getFromUnit(), 0.0);
-        if (fromFactor == 0.0) throw new IllegalArgumentException("Invalid 'from' unit: " + request.getFromUnit());
+        // หา factor จากหน่วยต้นทาง
+        Double fromFactor = TO_BASE_CONVERSIONS.get(fromUnit);
+        if (fromFactor == null) throw new IllegalArgumentException("Invalid 'from' unit: " + fromUnit);
 
-        double valueInBaseUnit = request.getValue() * fromFactor;
+        double valueInBaseUnit = value * fromFactor;
 
-        // ✅ แปลงไปยังหน่วยปลายทาง
-        double toFactor = TO_BASE_CONVERSIONS.getOrDefault(request.getToUnit(), 0.0);
-        if (toFactor == 0.0) throw new IllegalArgumentException("Invalid 'to' unit: " + request.getToUnit());
+        // แปลงไปยังหน่วยปลายทาง
+        Double toFactor = TO_BASE_CONVERSIONS.get(toUnit);
+        if (toFactor == null) throw new IllegalArgumentException("Invalid 'to' unit: " + toUnit);
 
         return valueInBaseUnit / toFactor;
     }
