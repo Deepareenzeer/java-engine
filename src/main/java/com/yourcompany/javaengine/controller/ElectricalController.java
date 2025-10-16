@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 
-@CrossOrigin(origins = "https://my-frontend-app.vercel.app")
+@CrossOrigin(origins = "https://frontend-ui-seven-lime.vercel.app")
 @RestController
 @RequestMapping("/electrical")
 public class ElectricalController {

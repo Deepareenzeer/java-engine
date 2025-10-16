@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "https://my-frontend-app.vercel.app")
+@CrossOrigin(origins = "https://frontend-ui-seven-lime.vercel.app")
 @RequestMapping("/plotter")
 public class PlotterController {
 
