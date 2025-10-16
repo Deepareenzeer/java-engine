@@ -1,16 +1,18 @@
 package com.yourcompany.javaengine.controller;
 
-// อย่าลืม import Map, HashMap, และ ResponseEntity
 import com.yourcompany.javaengine.model.UnitConversionRequest;
 import com.yourcompany.javaengine.service.UnitConversionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Controller สำหรับจัดการคำขอแปลงหน่วย
+ * Endpoint หลัก: /unit
+ */
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*") // อนุญาตการเข้าถึงจากทุก Domain เพื่อการทดสอบ
 @RequestMapping("/unit")
 public class UnitConversionController {
 
@@ -21,21 +23,31 @@ public class UnitConversionController {
         this.unitConversionService = unitConversionService;
     }
 
-    // ✅ แก้ไข 1: เปลี่ยน Endpoint จาก "/unit" เป็น "/convert"
+    /**
+     * Endpoint สำหรับแปลงหน่วย
+     * Path: POST /unit/convert
+     * @param request JSON body ที่มี category, fromUnit, toUnit, และ value
+     * @return ผลลัพธ์ในรูปแบบ JSON {"result": value}
+     */
     @PostMapping("/convert")
     public ResponseEntity<Map<String, Double>> convertUnits(@RequestBody UnitConversionRequest request) {
         try {
+            // เรียกใช้ Service เพื่อทำการแปลง
             double result = unitConversionService.convert(request);
 
-            // ✅ แก้ไข 2: สร้าง Map เพื่อส่งผลลัพธ์กลับในรูปแบบ {"result": 123.45}
-            // ซึ่งตรงกับที่ Frontend คาดหวัง
+            // สร้าง Map เพื่อส่งผลลัพธ์กลับในรูปแบบ {"result": 123.45}
             Map<String, Double> response = new HashMap<>();
             response.put("result", result);
 
             return ResponseEntity.ok(response);
 
         } catch (IllegalArgumentException e) {
+            // กรณีที่มีข้อผิดพลาดในการแปลง เช่น หน่วยไม่ถูกต้อง
+            // คืนค่า 400 Bad Request และอาจจะใส่ข้อความ Error ใน Body ด้วย
             return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+             // กรณี Error อื่นๆ
+            return ResponseEntity.internalServerError().build();
         }
     }
 }
