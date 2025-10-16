@@ -1,5 +1,5 @@
 # 1. BUILD STAGE: ใช้ Maven Image ที่มี JDK สำหรับ Build แอป
-FROM maven:3.8.7-openjdk-21 AS build
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
 # Copy ไฟล์ POM และรันการดาวน์โหลด dependencies
@@ -11,7 +11,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # 2. RUNTIME STAGE: ใช้ JRE Image ที่เล็กกว่าสำหรับรัน
-FROM openjdk:21-jre-slim
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Copy ไฟล์ .jar ที่ Build เสร็จแล้วจาก build stage
