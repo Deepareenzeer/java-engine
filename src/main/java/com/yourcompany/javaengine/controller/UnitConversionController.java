@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://my-frontend-app.vercel.app")
 @RequestMapping("/unit")
 public class UnitConversionController {
 

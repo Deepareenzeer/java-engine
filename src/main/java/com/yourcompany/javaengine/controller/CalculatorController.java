@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.mariuszgromada.math.mxparser.Expression;
 import org.mariuszgromada.math.mxparser.mXparser;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://my-frontend-app.vercel.app")
 @RestController
 @RequestMapping("/calculator")
 public class CalculatorController {

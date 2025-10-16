@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yourcompany.javaengine.service.CurrencyService;
 
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://my-frontend-app.vercel.app")
 @RestController
 @RequestMapping("/currency")
 public class CurrencyController {
